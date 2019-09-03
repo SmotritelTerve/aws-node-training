@@ -4,7 +4,7 @@ A test project to learn [AWS SDK with Node JS ](https://docs.aws.amazon.com/en_u
 
 ## Installation
 
-Clone the project and run the server.
+Clone the project.
 
 Create [Amazon Identity and Access Management (IAM)](https://aws.amazon.com/ru/iam/) account
 
