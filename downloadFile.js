@@ -1,27 +1,29 @@
 const aws = require('aws-sdk');
+const fs = require('fs');
 
-(async function(){
+const filePath = './downloaded/magic.gif';
+const bucketName = 'abracadabraboom';
+const key = 'magic.gif';
+
+const downloadFile = async (filePath, bucketName, key) => {
     try{
 
         const s3 = new aws.S3();
 
-        // const responseList = await s3.listObjectsV2({
-        //     Bucket: 'abracadabraboom',
-        // }).promise();
-
         const responseFile = {
-            Bucket: 'abracadabraboom',
-            Key: 'magic.gif'
+            Bucket: bucketName,
+            Key: key
         };
-
-        // console.log(responseList);
 
         s3.getObject(responseFile, function(err, data){
             if (err) console.log(err, err.stack);
-            else console.log(data);
+            else fs.writeFileSync(filePath, data.Body);
+            console.log(`${filePath} has been created!`);;
         })
 
-    } catch(e){
-        console.log('our error', e);
+    } catch(err){
+        console.log(`Download Error ${err}`);
     }
-})();
+};
+
+downloadFile(filePath, bucketName, key);

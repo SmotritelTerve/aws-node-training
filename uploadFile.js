@@ -1,6 +1,9 @@
 // Load the SDK and UUID
 const AWS = require('aws-sdk');
 const uuid = require('uuid');
+const fs = require('fs');
+
+const filePath = './data/magic.gif';
 
 // Create test name
 const bucketName = 'abracadabraboom';
@@ -8,23 +11,25 @@ const bucketName = 'abracadabraboom';
 // Create unique bucket name
 // const bucketName = 'node-sdk-sample-' + uuid.v4();
 // Create name for uploaded object key
-var keyName = 'hello_world.txt';
+var keyName = 'magic.gif';
 
-// Create a promise on S3 service object
-const s3 = new AWS.S3({apiVersion: '2006-03-01'}).createBucket({Bucket: bucketName}).promise();
+// Create a S3 service object
+const s3 = new AWS.S3();
 
-// Handle promise fulfilled/rejected states
-s3.then(
-  function(data) {
-    // Create params for putObject call
-    const objectParams = {Bucket: bucketName, Key: keyName, Body: 'Hello World!'};
-    // Create object upload promise
-    const uploadPromise = new AWS.S3({apiVersion: '2006-03-01'}).putObject(objectParams).promise();
-    uploadPromise.then(
-      function(data) {
-        console.log("Successfully uploaded data to " + bucketName + "/" + keyName);
-      });
-}).catch(
-  function(err) {
-    console.error(err, err.stack);
-});
+const uploadFile = (file, bucket, key) => {
+  fs.readFile(file, (err, data) => {
+    if (err) console.error(err);
+    const base64data = new Buffer(data, 'binary');
+    const params = {
+      Bucket: bucket,
+      Key: key,
+      Body: base64data
+    };
+    s3.upload(params, (err, data) => {
+      if (err) console.error(`Upload Error ${err}`);
+      console.log('Upload Completed');
+    });
+  });
+};
+
+uploadFile(filePath, bucketName, keyName);
