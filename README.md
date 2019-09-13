@@ -8,7 +8,7 @@ Clone the project.
 
 Create [Amazon Identity and Access Management (IAM)](https://aws.amazon.com/ru/iam/) account
 
-Write IAM credentials to the credentials file according to [instructions](credentials)
+Write IAM credentials to the credentials file according to [instructions](https://docs.aws.amazon.com/en_us/cli/latest/userguide/cli-configure-files.html)
 
 
 ## License
